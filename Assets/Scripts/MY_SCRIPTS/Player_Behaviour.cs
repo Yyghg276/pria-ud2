@@ -23,10 +23,14 @@ public class Player_Behaviour : MonoBehaviour
     public float bullet_Speed = 100f;
     private bool isShooting;
 
+    private Game_Behaviour gameManager;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         col = GetComponent<CapsuleCollider>();
+
+        gameManager = GameObject.Find("GAME_MANAGER").GetComponent<Game_Behaviour>();
     }
 
     void Update()
@@ -59,10 +63,7 @@ public class Player_Behaviour : MonoBehaviour
             Rigidbody BulletRB = newBullet.GetComponent<Rigidbody>();
             BulletRB.velocity = this.transform.forward * bullet_Speed;
         }
-        else
-        {
             isShooting = false;
-        }
     }
 
     private bool IsGrounded()
@@ -70,5 +71,13 @@ public class Player_Behaviour : MonoBehaviour
         Vector3 capsuleBottom = new Vector3(col.bounds.center.x, col.bounds.min.y, col.bounds.center.z);
         bool grounded = Physics.CheckCapsule(col.bounds.center, capsuleBottom, DistanceToGround, GroundLayer, QueryTriggerInteraction.Ignore);
         return grounded;
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.name == "ENEMY")
+        {
+            gameManager.HP -= 1;
+        }
     }
 }
