@@ -75,9 +75,11 @@ public class Player_Behaviour : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
+        Debug.Log("HP" + gameManager.HP);
         if (collision.gameObject.name == "ENEMY")
         {
             gameManager.HP -= 1;
+            Debug.Log("HP" + gameManager.HP);
         }
     }
 }
